@@ -116,7 +116,7 @@ Variable Karol_Make(Scope* sc,CStr name,Variable* args){
     Double z = *(Double*)Variable_Data(v_z);
     
     Karol* pw = (Karol*)malloc(sizeof(Karol));
-    *pw = Karol_New((vec3d){ x - 0.75f * 0.75f,y + 1.75f,z - 0.75f * 0.75f },(vec3d){ 0.75f,2.0f,0.75f });
+    *pw = Karol_New((Vec3D){ x - 0.75f * 0.75f,y + 1.75f,z - 0.75f * 0.75f },(Vec3D){ 0.75f,2.0f,0.75f });
     KarolPtr ptr = SharedPointer_Make(pw,(void*)Karol_Free);
 
     Variable ret = Variable_Make(
@@ -167,7 +167,7 @@ Variable Karol_SetP(Scope* sc,CStr name,Variable* args){
         Number y = *(Number*)Variable_Data(y_var);
         Number z = *(Number*)Variable_Data(z_var);
 
-        k->p = (vec3d){ (float)x + 0.75f * 0.75f,(float)y + 1.75f,(float)z + 0.75f * 0.75f };
+        k->p = (Vec3D){ (float)x + 0.75f * 0.75f,(float)y + 1.75f,(float)z + 0.75f * 0.75f };
     }
 
     return Variable_Null();
@@ -188,7 +188,7 @@ Variable Karol_SetA(Scope* sc,CStr name,Variable* args){
         Number y = *(Number*)Variable_Data(y_var);
         Number z = *(Number*)Variable_Data(z_var);
 
-        k->a = (vec3d){ (float)x * F32_PI / 180.0f,(float)y * F32_PI / 180.0f,(float)z * F32_PI / 180.0f };
+        k->a = (Vec3D){ (float)x * F32_PI / 180.0f,(float)y * F32_PI / 180.0f,(float)z * F32_PI / 180.0f };
     }
 
     return Variable_Null();
@@ -205,10 +205,10 @@ Variable Karol_Step(Scope* sc,CStr name,Variable* args){
 
         Number steps = *(Number*)Variable_Data(b_var);
 
-        mat4x4 rotX = Matrix_MakeRotationX(k->a.x);
-        mat4x4 rotY = Matrix_MakeRotationY(k->a.y);
+        M4x4D rotX = Matrix_MakeRotationX(k->a.x);
+        M4x4D rotY = Matrix_MakeRotationY(k->a.y);
 
-        k->p = vec3d_Add(k->p,Matrix_MultiplyVector(rotX,Matrix_MultiplyVector(rotY,(vec3d){ 0.0f,0.0f,steps,1.0f })));
+        k->p = Vec3D_Add(k->p,Matrix_MultiplyVector(rotX,Matrix_MultiplyVector(rotY,(Vec3D){ 0.0f,0.0f,steps,1.0f })));
     }
 
     return Variable_Null();

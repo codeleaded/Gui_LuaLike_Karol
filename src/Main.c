@@ -38,14 +38,13 @@ void Setup(AlxWindow* w){
 	tv = TransformedView_New((Vec2){ GetWidth(),GetHeight() });
 
     cam = Camera_Make(
-		(vec3d){ FIELD_SIZEX,8.0f,FIELD_SIZEZ,1.0f },
-		(vec3d){ 0.0f,0.0f,0.0f,1.0f },
-		(vec3d){ 3.14 * 0.25f,3.14 * 0.75f,0.0f,1.0f },
+		(Vec3D){ FIELD_SIZEX,8.0f,FIELD_SIZEZ,1.0f },
+		(Vec3D){ 3.14 * 0.25f,3.14 * 0.75f,0.0f,1.0f },
 		90.0f
 	);
 
 	world = World3D_Make(
-		Matrix_MakeWorld((vec3d){ 0.0f,0.0f,0.0f,1.0f },(vec3d){ 0.0f,0.0f,0.0f,1.0f }),
+		Matrix_MakeWorld((Vec3D){ 0.0f,0.0f,0.0f,1.0f },(Vec3D){ 0.0f,0.0f,0.0f,1.0f }),
 		Matrix_MakePerspektive(cam.p,cam.up,cam.a),
 		Matrix_MakeProjection(cam.fov,(float)GetHeight() / (float)GetWidth(),0.1f,1000.0f)
 	);
@@ -61,7 +60,7 @@ void Update(AlxWindow* w){
         const float z = 0.0f;
 
         Karol* pw = (Karol*)malloc(sizeof(Karol));
-        *pw = Karol_New((vec3d){ x + 0.75f * 0.75f,y + 1.75f,z + 0.75f * 0.75f },(vec3d){ 0.75f,2.0f,0.75f });
+        *pw = Karol_New((Vec3D){ x + 0.75f * 0.75f,y + 1.75f,z + 0.75f * 0.75f },(Vec3D){ 0.75f,2.0f,0.75f });
         KarolPtr ptr = SharedPointer_Make(pw,(void*)Karol_Free);
 
         CStr name = Enviroment_Variablename_Next(&ll.ev,".KAROL",6);
@@ -95,13 +94,13 @@ void Update(AlxWindow* w){
 		Mode = Mode < 2 ? Mode + 1 : 0;
 
 	if(Stroke(ALX_KEY_W).DOWN)
-		cam.p = vec3d_Add(cam.p,vec3d_Mul(cam.ld,Speed * w->ElapsedTime));
+		cam.p = Vec3D_Add(cam.p,Vec3D_Mul(cam.ld,Speed * w->ElapsedTime));
 	if(Stroke(ALX_KEY_S).DOWN)
-		cam.p = vec3d_Sub(cam.p,vec3d_Mul(cam.ld,Speed * w->ElapsedTime));
+		cam.p = Vec3D_Sub(cam.p,Vec3D_Mul(cam.ld,Speed * w->ElapsedTime));
 	if(Stroke(ALX_KEY_A).DOWN)
-		cam.p = vec3d_Add(cam.p,vec3d_Mul(cam.sd,Speed * w->ElapsedTime));
+		cam.p = Vec3D_Add(cam.p,Vec3D_Mul(cam.sd,Speed * w->ElapsedTime));
 	if(Stroke(ALX_KEY_D).DOWN)
-		cam.p = vec3d_Sub(cam.p,vec3d_Mul(cam.sd,Speed * w->ElapsedTime));
+		cam.p = Vec3D_Sub(cam.p,Vec3D_Mul(cam.sd,Speed * w->ElapsedTime));
 	if(Stroke(ALX_KEY_R).DOWN)
 		cam.p.y += Speed * w->ElapsedTime;
 	if(Stroke(ALX_KEY_F).DOWN)
@@ -111,7 +110,7 @@ void Update(AlxWindow* w){
     tv.ZoomSpeed = 1.0f * w->ElapsedTime;
 	TransformedView_HandlePanZoom(&tv,window.Strokes,GetMouse());
 
-    //World3D_Set_Model(&world,Matrix_MakeWorld((vec3d){ 0.0f,0.0f,0.0f,1.0f },(vec3d){ 0.0f,0.0f,0.0f,1.0f }));
+    //World3D_Set_Model(&world,Matrix_MakeWorld((Vec3D){ 0.0f,0.0f,0.0f,1.0f },(Vec3D){ 0.0f,0.0f,0.0f,1.0f }));
 	World3D_Set_View(&world,Matrix_MakePerspektive(cam.p,cam.up,cam.a));
 	World3D_Set_Proj(&world,Matrix_MakeProjection(cam.fov,(float)GetHeight() / (float)GetWidth(),0.1f,1000.0f));
 
@@ -121,7 +120,7 @@ void Update(AlxWindow* w){
     Vector_Clear(&world.trisIn);
 	for(int i = 0;i<FIELD_SIZEZ;i++){
 		for(int j = 0;j<FIELD_SIZEX;j++){
-		    Lib3D_Sides(&world.trisIn,~((short)LIB3D_CUBE_S0_TOP | (short)LIB3D_CUBE_S1_TOP),(vec3d){ i + 0.05f,-1.0f,j + 0.05f },(vec3d){ 0.9f,1.0f,0.9f },DARK_BLUE,DARK_BLUE);
+		    Lib3D_Sides(&world.trisIn,~((short)LIB3D_CUBE_S0_TOP | (short)LIB3D_CUBE_S1_TOP),(Vec3D){ i + 0.05f,-1.0f,j + 0.05f },(Vec3D){ 0.9f,1.0f,0.9f },DARK_BLUE,DARK_BLUE);
 	    }
 	}
     
@@ -139,7 +138,7 @@ void Update(AlxWindow* w){
 	World3D_update(&world,cam.p,(Vec2){ GetWidth(),GetHeight() });
 
 	for(int i = 0;i<world.trisOut.size;i++){
-		triangle* t = (triangle*)Vector_Get(&world.trisOut,i);
+		Tri3D* t = (Tri3D*)Vector_Get(&world.trisOut,i);
 
 		if(Mode==0)
 			RenderTriangle(((Vec2){ t->p[0].x, t->p[0].y }),((Vec2){ t->p[1].x, t->p[1].y }),((Vec2){ t->p[2].x, t->p[2].y }),t->c);

@@ -62,13 +62,13 @@ void Update(AlxWindow* w){
         *pw = Karol_New((Vec3D){ x + 0.75f * 0.75f,y + 1.75f,z + 0.75f * 0.75f },(Vec3D){ 0.75f,2.0f,0.75f });
         KarolPtr ptr = SharedPointer_Make(pw,(void*)Karol_Free);
 
-        CStr name = Enviroment_Variablename_Next(&ll.ev,".KAROL",6);
+        CStr name = Environment_Variablename_Next(&ll.ev,".KAROL",6);
         Scope_BuildInitVariableRange(&ll.ev.sc,name,"karol",0,&ptr);
         CStr_Free(&name);
     }
     if(Stroke(ALX_KEY_ENTER).PRESSED){
-        Enviroment_ClearScript(&ll.ev);
-        Enviroment_Script(&ll.ev,"./code/Main.ll");
+        Environment_ClearScript(&ll.ev);
+        Environment_Script(&ll.ev,"./code/Main.ll");
 
         Variable ret = LuaLike_Function(&ll,"main",(Variable[]){ 
             VARIABLE_END

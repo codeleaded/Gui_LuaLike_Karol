@@ -4,8 +4,7 @@
 #include "/home/codeleaded/System/Static/Library/Lib3D_Cube.h"
 #include "/home/codeleaded/System/Static/Library/Lib3D_Mathlib.h"
 #include "/home/codeleaded/System/Static/Library/Lib3D_Mesh.h"
-
-#include "./Karol.h"
+#include "/home/codeleaded/System/Static/Library/Karol.h"
 
 #define FIELD_SIZEX  10
 #define FIELD_SIZEY  10
